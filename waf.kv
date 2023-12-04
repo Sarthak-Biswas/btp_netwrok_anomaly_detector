@@ -1,0 +1,74 @@
+<UILayout>
+
+    rows: rows
+
+    canvas.before:
+        Color:
+            rgba: (1, 1, 1, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+        gap: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: 40
+
+            Button:
+                id: start
+                text: 'START'
+                on_release: root.start()
+            Button:
+                id: block
+                text: 'BOCK ALL (OFF)'
+                on_release: root.block()
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+
+            Label:
+                text: 'Date'
+                bold: True
+                canvas.before:
+                    Color:
+                        rgba: (0.45, 0.65, 0.65, 1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            Label:
+                text: 'Time'
+                bold: True
+                canvas.before:
+                    Color:
+                        rgba: (0.45, 0.65, 0.65, 1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            Label:
+                text: 'IP Address'
+                bold: True
+                canvas.before:
+                    Color:
+                        rgba: (0.45, 0.65, 0.65, 1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            Label:
+                text: 'Port'
+                bold: True
+                canvas.before:
+                    Color:
+                        rgba: (0.45, 0.65, 0.65, 1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+        ScrollView:
+            GridLayout:
+                id: rows
+                cols: 1
