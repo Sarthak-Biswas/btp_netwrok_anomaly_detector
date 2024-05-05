@@ -1,74 +1,113 @@
 <UILayout>
 
     rows: rows
+    sttl: sttl
+    dttl: dttl
+    dbyte: dbyte
+    sbyte: sbyte
 
     canvas.before:
         Color:
-            rgba: (1, 1, 1, 1)
+            rgba: (0.9, 0.9, 0.8, 1)
         Rectangle:
             pos: self.pos
             size: self.size
 
     BoxLayout:
-        orientation: 'vertical'
+        orientation: 'horizontal'
         size: root.width, root.height
-        gap: 10
+
+        FloatLayout:
+            canvas:
+                Color:
+                    rgba: 0, 0, 0, 1  # Border color (black)
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 2  # Border width
+
+            BoxLayout:
+                orientation: "vertical"
+                size: root.width, root.height
+
+                
+                Label:
+                    id: sttl
+                    text: 'Source TTL'
+                    color: 0, 0, 0, 1
+                Label:
+                    id: dttl
+                    text: 'Destination TTL'
+                    color: 0, 0, 0, 1
+                Label:
+                    id: dbyte
+                    text: 'Destination Byte Rate:'
+                    color: 0, 0, 0, 1
+                Label:
+                    id: sbyte
+                    text: 'Source Byte Rate'
+                    color: 0, 0, 0, 1
+
 
         BoxLayout:
-            size_hint_y: None
-            height: 40
+            orientation: 'vertical'
+            size: root.width, root.height
+            gap: 10
 
-            Button:
-                id: start
-                text: 'START'
-                on_release: root.start()
-            Button:
-                id: block
-                text: 'BOCK ALL (OFF)'
-                on_release: root.block()
+            BoxLayout:
+                size_hint_y: None
+                height: 40
 
-        BoxLayout:
-            size_hint_y: None
-            height: 50
+                Button:
+                    id: start
+                    text: 'START'
+                    on_release: root.start()
+                Button:
+                    id: block
+                    text: 'BOCK ALL (OFF)'
+                    on_release: root.block()
 
-            Label:
-                text: 'Date'
-                bold: True
-                canvas.before:
-                    Color:
-                        rgba: (0.45, 0.65, 0.65, 1)
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-            Label:
-                text: 'Time'
-                bold: True
-                canvas.before:
-                    Color:
-                        rgba: (0.45, 0.65, 0.65, 1)
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-            Label:
-                text: 'IP Address'
-                bold: True
-                canvas.before:
-                    Color:
-                        rgba: (0.45, 0.65, 0.65, 1)
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-            Label:
-                text: 'Port'
-                bold: True
-                canvas.before:
-                    Color:
-                        rgba: (0.45, 0.65, 0.65, 1)
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
+            BoxLayout:
+                size_hint_y: None
+                height: 50
 
-        ScrollView:
-            GridLayout:
-                id: rows
-                cols: 1
+                Label:
+                    text: 'Date'
+                    bold: True
+                    canvas.before:
+                        Color:
+                            rgba: (0.45, 0.65, 0.65, 1)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                Label:
+                    text: 'Time'
+                    bold: True
+                    canvas.before:
+                        Color:
+                            rgba: (0.45, 0.65, 0.65, 1)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                Label:
+                    text: 'IP Address'
+                    bold: True
+                    canvas.before:
+                        Color:
+                            rgba: (0.45, 0.65, 0.65, 1)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                Label:
+                    text: 'Port'
+                    bold: True
+                    canvas.before:
+                        Color:
+                            rgba: (0.45, 0.65, 0.65, 1)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+            ScrollView:
+                GridLayout:
+                    id: rows
+                    cols: 1

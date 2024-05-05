@@ -6,6 +6,7 @@ from datetime import datetime
 import joblib
 from sklearn.ensemble import RandomForestClassifier
 import warnings
+import subprocess
 from kivy.app import App
 from kivy.clock import mainthread
 from kivy.uix.widget import Widget
@@ -19,6 +20,8 @@ class UILayout(Widget):
     
     def __init__(self, **kwargs):
         super(UILayout, self).__init__(**kwargs)
+        
+        self.blk = False
         
         self.thread = threading.Thread(target=self.calculate)
     
@@ -36,13 +39,20 @@ class UILayout(Widget):
         
         if block.text == 'BOCK ALL (OFF)':
             block.text = 'BLOCK ALL (ON)'
+            self.blk = True
         else:
             block.text = 'BOCK ALL (OFF)'
+            self.blk = False
         
     @mainthread    
-    def add_record(self, date, tim, ip, port):
+    def add_record(self, date, tim, ip, port, dat):
         container = self.ids.rows
         row = BoxLayout(size_hint_y=None, height=40, pos_hint={'top': 1})
+        
+        self.ids.sttl.text = f"Source TTL: {str(dat[5])} ms"
+        self.ids.dttl.text = f"Destination TTL: {str(dat[6])} ms"
+        self.ids.dbyte.text = f"Destination Byte Rate: {str(dat[8])} B/s"
+        self.ids.sbyte.text = f"Source Byte Rate: {str(dat[7])} B/s"
         
         date_ = Label(text = date, color=(1, 0, 0, 1))
         time_ = Label(text = tim, color=(1, 0, 0, 1))
@@ -55,6 +65,10 @@ class UILayout(Widget):
         row.add_widget(port_)
         
         container.add_widget(row)
+        
+    def firewall(self, ip, port):
+        cmd = ["iptables", "-A", "INPUT", "-s", ip, "-p", "tcp", "--dport", str(port), "-j", "DROP"]
+        subprocess.run(cmd, check=True)
 
     def calculate(self):
         
@@ -224,7 +238,7 @@ class UILayout(Widget):
                     if pred[0] == 1:
                     #     print((src_ip, dst_ip))
                         print(f"{(src_map, dst_map)} = {packet_map[(src_map, dst_map)]}")
-                        self.add_record(datetime.now().strftime("%m-%d-%Y"), datetime.now().strftime("%H:%M:%S"), src_map[0], src_map[1])
+                        self.add_record(datetime.now().strftime("%m-%d-%Y"), datetime.now().strftime("%H:%M:%S"), src_map[0], src_map[1], packet_map[(src_map, dst_map)])
                     
                 if not dst_ip == sys_ip:
                 # if 1 == 1:
@@ -234,7 +248,7 @@ class UILayout(Widget):
                     if pred[0] == 1:
                     #     print((src_ip, dst_ip))
                         # print(f"{(dst_map, src_map)} = {packet_map[(dst_map, src_map)]}")
-                        self.add_record(datetime.now().strftime("%m-%d-%Y"), datetime.now().strftime("%H:%M:%S"), dst_map[0], dst_map[1])            
+                        self.add_record(datetime.now().strftime("%m-%d-%Y"), datetime.now().strftime("%H:%M:%S"), dst_map[0], dst_map[1], packet_map[(dst_map, src_map)])            
 
 class WAFApp(App):
     
